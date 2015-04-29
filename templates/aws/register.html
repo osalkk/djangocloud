@@ -1,0 +1,87 @@
+{% extends 'aws/base.html' %}
+         {% load staticfiles %}
+        {% block body_block %}
+
+
+
+
+<div class="row-fluid sortable ui-sortable">
+				<div class="box span12">
+					<div class="box-header" data-original-title="">
+						<h2><i class="halflings-icon edit"></i><span class="break"></span>Form Elements</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
+							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+                        {% if registered %}
+                        <strong>Thank you for registering!</strong>
+                        <a href="{% url 'index' %}">Return to the homepage.</a><br />
+                        {% else %}
+
+                        <form id="user_form" class="form-horizantal" method="post" action="/aws/register/" enctype="multipart/form-data">
+
+                            {% csrf_token %}
+                            <fieldset>
+                                <div class="form-body">
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Username</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" placeholder="Username" name="username">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Email Address</label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-envelope"></i>
+                                                </span>
+                                                <input type="email" class="form-control" placeholder="Email Address" name="email">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Password</label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" placeholder="Password" name="password">
+                                                <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="form-actions">
+
+                                        <div class="col-md-offset-3 col-md-4">
+                                            <button type="submit" class="btn green">Submit</button>
+                                            <button type="button" class="btn default">Cancel</button>
+                                        </div>
+
+                                </div>
+                            </fieldset>
+                        </form>
+                                                <!-- END FORM-->
+                    </div>
+                </div>
+</div>
+
+
+
+
+
+
+
+        {% endif %}
+<script src="{% static "assets/admin/pages/scripts/form-samples.js" %}"></script>
+        {% endblock %}

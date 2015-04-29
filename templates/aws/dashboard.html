@@ -1,0 +1,33 @@
+{% extends 'aws/base.html' %}
+
+{% load staticfiles %}
+        {% block body_block %}
+
+
+
+
+<div class="box blue ">
+					<div class="box-header">
+						<h2><i class="halflings-icon hand-top"></i><span class="break"></span>Regions</h2>
+					</div>
+					<div class="box-content">
+		                {% for instance in instances %}
+						<a class="quick-button span2" href="/aws/region/{{ instance.region }}">
+							<i class="glyphicons-icon globe"></i>
+							<p>{{ instance.region }}</p>
+							<span class="notification blue">{{ instance.count }}</span>
+						</a>
+                        {% endfor %}
+						<div class="clearfix"></div>
+					</div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
