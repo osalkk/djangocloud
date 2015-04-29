@@ -265,7 +265,7 @@ def connect_all(key,secret):
 
 if __name__ == "__main__":
     try:
-        
+
         vol(key,secret,instance_id,region,volume_name)
     except:
         cgi.print_exception()
