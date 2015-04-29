@@ -54,10 +54,16 @@ def index(request):
 def dashboard(request):
     current_user = request.user
     us_id=current_user.id
-    key=UserProfile.objects.get(id=us_id).awskey
-    secret=UserProfile.objects.get(id=us_id).awssecret
 
-    a=aws.get_instances.connect_all(key,secret)
+    key=UserProfile.objects.get(user_id=us_id).awskey
+    print(key)
+
+    secret=UserProfile.objects.get(user_id=us_id).awssecret
+    if key:
+        a=aws.get_instances.connect_all(key,secret)
+    else:
+        context_dict = {'hata': "Please check your aws key and secret in your Account"}
+        return render(request, 'aws/profile.html', context_dict)
 
 
 
@@ -74,6 +80,8 @@ def dashboard(request):
     elif type(a)==list:
         context_dict = {'instances': a}
         return render(request, 'aws/dashboard.html', context_dict)
+
+
 
 
 @login_required
@@ -147,11 +155,10 @@ def profile(request):
             #print("not valid")
             print(profile_form.errors)
     else:
-        #print("get")
-        us_id=current_user.id
-        a=UserProfile.objects.get(id=us_id).awskey
-        b=UserProfile.objects.get(id=us_id).awssecret
-        #print(a,b,current_user,current_user.id)
+        us_id=request.user
+        a=UserProfile.objects.get(user_id=us_id).awskey
+        b=UserProfile.objects.get(user_id=us_id).awssecret
+        print(a,b)
 
         context_dict = {'awskey' : a,'awssecret' : b,}
 
@@ -313,6 +320,11 @@ def register(request):
 
             # Now we save the UserProfile model instance.
             profile.save()
+            current_user = profile.user
+            us_id=current_user.id
+            print(current_user,us_id)
+            a=UserProfile.objects.filter(user_id=us_id).update(awskey='demo',awssecret='demo')
+            print(a)
 
             # Update our variable to tell the template registration was successful.
             registered = True
@@ -332,7 +344,7 @@ def register(request):
 
     # Render the template depending on the context.
     return render(request,
-            'aws/register.html',
+            'aws/register1.html',
             {'user_form': user_form, 'profile_form': profile_form, 'registered': registered} )
 
 def user_login(request):
@@ -369,7 +381,7 @@ def user_login(request):
             # Bad login details were provided. So we can't log the user in.
             #print("Invalid login details: {0}, {1}".format(username, password))
             err_msg= 'Please check your username or password.'
-            return render(request, 'aws/login.html', {'login': err_msg})
+            return render(request, 'aws/login1.html', {'login': err_msg})
             #return HttpResponseRedirect("/aws/")
 
     # The request is not a HTTP POST, so display the login form.
@@ -377,7 +389,7 @@ def user_login(request):
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render(request, 'aws/login.html', {})
+        return render(request, 'aws/login1.html', {})
 
 @login_required
 def user_logout(request):
