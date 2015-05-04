@@ -24,44 +24,42 @@ def connect(key,secret,region):
 
     response=[]
     try:
-        res = conn.get_all_instances()
+        reservations = conn.get_all_instances()
 
-        if res:
-
-            for instance in res:
+        if reservations:
+            for reservation in reservations:
                 dic1={}
 
-                for inst in instance.instances:
-                    reservations = conn.get_all_instances(filters={"instance_id":inst.id})
-                    #reservations = conn.get_all_instances()
+                for inst in reservation.instances:
+
                     if ("Name" in inst.tags):
-                        inst_name = reservations[0].instances[0].tags['Name']
-                        inst_state = reservations[0].instances[0].state
-                        inst_type = reservations[0].instances[0].instance_type
-                        inst_id = reservations[0].instances[0].id
-                        inst_placement=reservations[0].instances[0].placement
+                        inst_name = inst.tags['Name']
+                        inst_state = inst.state
+                        inst_type = inst.instance_type
+                        inst_id = inst.id
+                        inst_placement=inst.placement
+
 
                     else:
-                        inst_name = reservations[0].instances[0].id
-                        inst_state= reservations[0].instances[0].state
-                        inst_type= reservations[0].instances[0].instance_type
-                        inst_id = reservations[0].instances[0].id
-                        inst_placement=reservations[0].instances[0].placement
+                        inst_name = inst.id
+                        inst_state = inst.state
+                        inst_type = inst.instance_type
+                        inst_id = inst.id
+                        inst_placement=inst.placement
 
-                dic1["Name"] = inst_name
-                dic1["Status"] = inst_state
-                dic1["Id"] = inst_id
-                dic1["Type"] = inst_type
-                dic1["AZ"] = inst_placement
+                    dic1["Name"] = inst_name
+                    dic1["Status"] = inst_state
+                    dic1["Id"] = inst_id
+                    dic1["Type"] = inst_type
+                    dic1["AZ"] = inst_placement
 
-                response.append(dic1)
+                    response.append(dic1)
 
     except Exception as e:
 
             response=e.message
-
-
     return response
+
 def connect1(instance_id,key,secret,region):
     logger.info("connect1 istendi")
     logger.info(instance_id)
@@ -190,7 +188,7 @@ def connect1(instance_id,key,secret,region):
         dic1["diskread"] = diskread
         dic1["diskwrite"] = diskwrite
         dic1["snapshots"] = snap_list
-
+        print(dic1)
         response.append(dic1)
 
 
