@@ -14,8 +14,8 @@
 		                {% for instance in instances %}
 						<a class="quick-button span2" href="/aws/region/{{ instance.region }}">
 							<i class="glyphicons-icon globe"></i>
-							<p>{{ instance.region }}</p>
-							<span class="notification blue">{{ instance.count }}</span>
+                            <p>{{ instance.region }}</p>
+							<span class="notification red">{{ instance.count }}</span>
 						</a>
                         {% endfor %}
 						<div class="clearfix"></div>
